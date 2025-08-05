@@ -8,13 +8,14 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname)); // Serve static files like index.html
 
-// Serve index.html from the root
+// Serve index.html from root
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// POST /register — Sends a POST request to a user-defined webhookUrl with rest of body
+// POST /register — Sends POST to user-defined webhookUrl
 app.post('/register', async (req, res) => {
   const { webhookUrl, ...rest } = req.body;
 
@@ -38,7 +39,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// GET /fetch — Sends a GET request to the ?url= query param
+// GET /fetch — Sends GET to ?url=
 app.get('/fetch', async (req, res) => {
   const url = req.query.url;
   if (!url) {
@@ -50,11 +51,12 @@ app.get('/fetch', async (req, res) => {
       headers: { Accept: 'application/json' },
     });
 
-    // Only respond with JSON if content-type is JSON
-    if (response.headers['content-type'].includes('application/json')) {
+    const contentType = response.headers['content-type'];
+
+    if (contentType.includes('application/json')) {
       res.status(200).json(response.data);
     } else {
-      res.status(200).send(response.data); // fallback to raw text or HTML
+      res.status(200).send(response.data); // for HTML or text
     }
   } catch (error) {
     res.status(500).json({
