@@ -25,13 +25,14 @@
     <option value="GET">GET</option>
     <option value="POST">POST</option>
   </select>
-
+  <div>
   <label>URL:</label>
   <input type="text" id="url" placeholder="Enter full URL" />
-
+  </div>
+  <div>
   <label>JSON Body (for POST):</label>
   <textarea id="jsonBody" placeholder='{"message": "Hello webhook!"}' rows="5"></textarea>
-
+  </div>
   <button onclick="sendRequest()">Send Request</button>
 
   <h3>Server Response:</h3>
