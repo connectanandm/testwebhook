@@ -1,7 +1,7 @@
-##Test GET request
+Test GET request
     https://jsonplaceholder.typicode.com/posts/1
-
-##Test POST request
+*******************************************************************
+Test POST request
 #default url
     https://testswebhook-2442.onrender.com/register
 #json
