@@ -6,8 +6,8 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());              // Allow CORS
-app.use(express.json());      // Parse JSON
+app.use(cors());
+app.use(express.json());
 
 // Serve HTML file
 app.get('/', (req, res) => {
@@ -37,8 +37,8 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Handle GET to user-defined URL
-app.post('/fetch', async (req, res) => {
+// ✅ Handle GET to user-defined URL
+app.get('/fetch', async (req, res) => {
   const url = req.query.url;
   if (!url) {
     return res.status(400).json({ error: 'Missing url query parameter' });
@@ -55,7 +55,6 @@ app.post('/fetch', async (req, res) => {
   }
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`ConnectsWebhook Server is Running at http://localhost:${PORT}`);
 });
