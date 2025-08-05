@@ -20,25 +20,42 @@
 </head>
 <body>
   <h2>Webhook Tester</h2>
+
   <label>Method:</label>
-  <select id="method">
+  <select id="method" onchange="handleMethodChange()">
     <option value="GET">GET</option>
     <option value="POST">POST</option>
   </select>
+
   <div>
-  <label>URL:</label>
-  <input type="text" id="url" placeholder="Enter full URL" />
+    <label>URL:</label>
+    <input type="text" id="url" placeholder="Enter full URL" />
   </div>
+
   <div>
-  <label>JSON Body (for POST):</label>
-  <textarea id="jsonBody" placeholder='{"message": "Hello webhook!"}' rows="5"></textarea>
+    <label>JSON Body (for POST):</label>
+    <textarea id="jsonBody" placeholder='{"message": "Hello webhook!"}' rows="5"></textarea>
   </div>
+
   <button onclick="sendRequest()">Send Request</button>
 
   <h3>Server Response:</h3>
   <pre id="responseBox">Waiting for response...</pre>
 
   <script>
+    const defaultPostUrl = "https://testswebhook-2442.onrender.com/register";
+
+    function handleMethodChange() {
+      const method = document.getElementById('method').value;
+      const urlInput = document.getElementById('url');
+
+      if (method === "POST") {
+        urlInput.value = defaultPostUrl;
+      } else if (method === "GET") {
+        urlInput.value = "";
+      }
+    }
+
     async function sendRequest() {
       const method = document.getElementById('method').value;
       const url = document.getElementById('url').value;
@@ -78,6 +95,9 @@
         responseBox.textContent = "Error: " + err.message;
       }
     }
+
+    // Set default URL if page loads with POST selected
+    window.onload = handleMethodChange;
   </script>
 </body>
 </html>
