@@ -1,5 +1,5 @@
 Test GET request  
-&nbsp;&nbsp;&nbsp;&nbsphttps://jsonplaceholder.typicode.com/posts/1
+&nbsp;&nbsp;&nbsp;https://jsonplaceholder.typicode.com/posts/1
 *******************************************************************
 Test POST request  
 &nbsp;&nbsp;&nbsp;&nbspdefault url  
