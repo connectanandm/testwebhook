@@ -9,12 +9,12 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve HTML file
+// Serve index.html from the root
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Handle POST to user-defined URL
+// POST /register — Sends a POST request to a user-defined webhookUrl with rest of body
 app.post('/register', async (req, res) => {
   const { webhookUrl, ...rest } = req.body;
 
@@ -33,11 +33,12 @@ app.post('/register', async (req, res) => {
     res.status(500).json({
       error: 'Failed to POST to URL',
       details: error.message,
+      responseData: error.response?.data || null,
     });
   }
 });
 
-// ✅ Handle GET to user-defined URL
+// GET /fetch — Sends a GET request to the ?url= query param
 app.get('/fetch', async (req, res) => {
   const url = req.query.url;
   if (!url) {
@@ -45,16 +46,25 @@ app.get('/fetch', async (req, res) => {
   }
 
   try {
-    const response = await axios.get(url);
-    res.status(200).json(response.data);
+    const response = await axios.get(url, {
+      headers: { Accept: 'application/json' },
+    });
+
+    // Only respond with JSON if content-type is JSON
+    if (response.headers['content-type'].includes('application/json')) {
+      res.status(200).json(response.data);
+    } else {
+      res.status(200).send(response.data); // fallback to raw text or HTML
+    }
   } catch (error) {
     res.status(500).json({
       error: 'Failed to GET from URL',
       details: error.message,
+      responseData: error.response?.data || null,
     });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`ConnectsWebhook Server is Running at http://localhost:${PORT}`);
+  console.log(`✅ ConnectsWebhook Server Running at http://localhost:${PORT}`);
 });
